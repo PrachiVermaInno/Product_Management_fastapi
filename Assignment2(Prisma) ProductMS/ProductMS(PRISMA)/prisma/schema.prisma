@@ -1,0 +1,45 @@
+generator client {
+  provider = "prisma-client-py"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+
+model Company{
+  id          Int @id @default(autoincrement())
+  name        String @unique
+  location    String?
+  products    Product[] //relation field
+  createdAt   DateTime  @default(now())
+}
+
+model Category{
+  id          Int @id @default(autoincrement())
+  name        String @unique
+  description String?
+  products    Product[] //relation field
+  createdAt   DateTime @default(now())
+}
+
+model Product {
+  id          Int      @id @default(autoincrement())
+  
+  // SCALARS
+  name        String
+  price       Float
+  
+  // FOREIGN KEYS
+  companyId   Int
+  categoryId  Int
+  
+  // RELATIONS
+  company     Company  @relation(fields: [companyId], references: [id])
+  Category    Category @relation(fields: [categoryId], references: [id])
+  
+  // INDEXES
+  @@index([companyId])
+  @@index([categoryId])
+}

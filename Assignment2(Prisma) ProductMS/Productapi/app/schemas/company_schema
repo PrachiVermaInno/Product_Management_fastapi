@@ -1,0 +1,17 @@
+from pydantic import BaseModel
+
+# ✅ Base schema — shared attributes
+class CompanyBase(BaseModel):
+    name: str
+    location: str
+
+# ✅ Schema for creating a new company
+class CompanyCreate(CompanyBase):
+    pass
+
+# ✅ Schema for returning data
+class CompanyResponse(CompanyBase):
+    id: int
+
+    class Config:
+        orm_mode = True
